@@ -3,6 +3,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputError from "@/Components/InputError.vue";
 import { useForm } from "@inertiajs/vue3";
 import { Head, Link } from "@inertiajs/vue3";
+import { toastNotications } from "@/composables/toastNotifications";
+
+const toast = toastNotications();
 
 const props = defineProps({
     category : Object,
@@ -15,7 +18,14 @@ const form = useForm({
 });
 
 const updateCategory = () => {
-    form.put(route("categories.update", props.category.id));
+    form.put(route("categories.update", props.category.id), {
+         onSuccess: () => {
+            toast.success('Update Successfully')
+        },
+        onError: () => {
+             toast.error('Failed to update')
+        }
+    });
 };
 </script>
 

@@ -3,14 +3,23 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputError from "@/Components/InputError.vue";
 import { useForm } from "@inertiajs/vue3";
 import { Head, Link } from "@inertiajs/vue3";
+import { toastNotications } from "@/composables/toastNotifications";
 
+const toast = toastNotications();
 const form = useForm({
     title: "",
     description: "",
 });
 
 const createCategory = () => {
-    form.post(route("categories.store"));
+    form.post(route("categories.store"), {
+        onSuccess: () => {
+            toast.success('Create Successfully')
+        },
+        onError: () => {
+             toast.error('Failed to create')
+        }
+    });
 };
 </script>
 
@@ -20,7 +29,7 @@ const createCategory = () => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Add Categories
+                Add Category
             </h2>
         </template>
 
@@ -40,7 +49,7 @@ const createCategory = () => {
                                     v-model="form.title"
                                     type="text"
                                     id="name"
-                                    class="border border-gray-300 rounded w-full"
+                                    class="w-full border border-gray-300 rounded"
                                 />
                                 <InputError
                                         :message="form.errors.title"
@@ -57,7 +66,7 @@ const createCategory = () => {
                                 <textarea
                                     v-model="form.description"
                                     id="description"
-                                    class="border border-gray-300 rounded w-full"
+                                    class="w-full border border-gray-300 rounded"
                                 ></textarea>
                               <InputError
                                         :message="form.errors.description"
@@ -68,7 +77,7 @@ const createCategory = () => {
                             <div class="mb-5">
                                 <button
                                     type="submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    class="text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 >
                                     Submit
                                 </button>

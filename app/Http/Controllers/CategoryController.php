@@ -9,12 +9,15 @@ use Inertia\Inertia;
 class CategoryController extends Controller
 {
     //
-    public function index()
-    {
-        $categories = Category::all();
-        return Inertia::render('Category/Index', ['categories' => $categories]);
-    }
+  public function index()
+{
+    // Show 10 per page
+    $categories = Category::latest()->paginate(5);
 
+    return Inertia::render('Category/Index', [
+        'categories' => $categories,
+    ]);
+}
     public function create()
     {
         return Inertia::render('Category/Create');
