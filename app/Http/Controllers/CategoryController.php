@@ -9,15 +9,27 @@ use Inertia\Inertia;
 class CategoryController extends Controller
 {
     //
-  public function index()
-{
-    // Show 10 per page
-    $categories = Category::latest()->paginate(5);
+    public function index(Request $request)
+    {
+       $categories = Category::query()
+        ->when($request->search, fn($query) =>
+            $query->where('title', 'like', "%{$request->search}%")
+        )
+        ->latest()
+        ->paginate(5)
+        ->withQueryString();  
 
-    return Inertia::render('Category/Index', [
-        'categories' => $categories,
-    ]);
-}
+        return Inertia::render('Category/Index', [
+            'categories' => $categories,
+            'filters' => $request->only(['search'])
+        ]);
+    }
+
+    public function show(Category $category)
+    {
+         return Inertia::render('Category/Show', ['category' => $category]);
+    }
+
     public function create()
     {
         return Inertia::render('Category/Create');
@@ -42,31 +54,30 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-       $category->delete();
-       
-       // Redirect or return response
+        $category->delete();
+
+        // Redirect or return response
         return redirect()->route('categories.index');
     }
 
     public function edit(Category $category)
     {
-       
-         return Inertia::render('Category/Edit',[ 'category' => $category ]);
+
+        return Inertia::render('Category/Edit', ['category' => $category]);
     }
 
     public function update(Request $request, Category $category)
     {
         // validate input
-            $validated =   $request->validate([
+        $validated =   $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|'
         ]);
 
-         // save to database
-         $category->update($validated);
+        // save to database
+        $category->update($validated);
 
-          // Redirect or return response
+        // Redirect or return response
         return redirect()->route('categories.index');
-
     }
 }

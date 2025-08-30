@@ -14,12 +14,41 @@ class Borrow extends Model
         'borrowed_at',
         'due_at',
         'returned_at',
+        'status',
 
 
     ];
 
-    public function book() 
+    protected $casts = [
+        'borrowed_at' => 'date:Y-m-d',
+        'due_at' => 'date:Y-m-d',
+        'returned_at' => 'date:Y-m-d',
+    ];
+
+    public function getStatusAttribute($value)
     {
-    return $this->belongsTo(Book::class);
+        if ($this->returned_at) {
+             // If book returned AFTER due date → overdue
+            if ($this->returned_at->gt($this->due_at)) {
+                return 'overdue';
+            }
+              return 'returned';
+        }
+
+        if (now()->gt($this->due_at)) {
+            return 'overdue';
+        }
+
+        return 'borrowed';
+    }
+
+    public function book()
+    {
+        return $this->belongsTo(Book::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -3,9 +3,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 
-const page = usePage()
+const {props} = usePage()
 
-const categoriesCount = computed(() => page.props.categoriesCount)
+
 
 </script>
 
@@ -19,7 +19,7 @@ const categoriesCount = computed(() => page.props.categoriesCount)
             </h2>
         </template>
 
-        <div class="py-12">
+        <div class="flex py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="flex p-6 text-gray-900">
@@ -27,19 +27,76 @@ const categoriesCount = computed(() => page.props.categoriesCount)
 
                         <Link
                             :href="route('categories.index')"
-                            class="block max-w-xs p-6 m-2 bg-white border border-gray-200 rounded-lg shadow-sm"
+                            class="block w-64 p-6 m-2 bg-blue-500 border border-gray-200 rounded-lg shadow-sm"
                         >
                             <h5
-                                class="mb-2 text-2xl font-bold tracking-tight text-black"
+                                class="mb-2 text-2xl font-bold tracking-tight text-white"
                             >
                                 Total Categories
                             </h5>
                             <p
-                                class="text-xl text-gray-700 dark:text-gray-400"
+                                class="text-2xl text-white"
                             >
-                                {{ categoriesCount  }}
+                                {{ props.categoriesCount  }}
                             </p>
                         </Link>
+
+                             <Link
+                            :href="route('books.index')"
+                            class="block w-64 p-6 m-2 bg-blue-500 border border-gray-200 rounded-lg shadow-sm"
+                        >
+                            <h5
+                                class="mb-2 text-2xl font-bold tracking-tight text-white"
+                            >
+                                Total Books
+                            </h5>
+                            <p
+                                class="text-2xl text-white"
+                            >
+                              {{ props.booksCount }}
+                            </p>
+                        </Link>
+
+                        
+                             <Link
+                            :href="route('borrows.index')"
+                            class="block w-64 p-6 m-2 bg-blue-500 border border-gray-200 rounded-lg shadow-sm"
+                        >
+                            <h5
+                                class="mb-2 text-2xl font-bold tracking-tight text-white"
+                            >
+                                Total Borrows
+                            </h5>
+                            <p
+                                class="text-2xl text-white"
+                            >
+                              {{ props.borrowsCount }}
+                            </p>
+                        </Link>
+
+
+                         
+                             <Link
+                            :href="route('users.index')"
+                            class="block w-64 p-6 m-2 bg-blue-500 border border-gray-200 rounded-lg shadow-sm"
+                        >
+                            <h5
+                                class="mb-2 text-2xl font-bold tracking-tight text-white"
+                            >
+                                Total Users
+                            </h5>
+                            <p
+                                class="text-2xl text-white"
+                            >
+                              {{ props.usersCount }}
+                            </p>
+                        </Link>
+
+
+                             
+
+
+
 
                         
 
@@ -47,6 +104,8 @@ const categoriesCount = computed(() => page.props.categoriesCount)
 
                         
                     </div>
+
+                    
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@ defineProps({
 
 <template>
     <hr>
-    <div v-if="links.length > 3" class="flex flex-wrap justify-end gap-2 mt-4">
+    <div v-if="links.length > 3" class="flex flex-wrap justify-end gap-2 m-4">
         <template v-for="link in links" :key="link.label">
             <div v-if="!link.url" v-html="link.label" class="px-3 py-1 text-gray-400 border rounded"></div>
             <Link
